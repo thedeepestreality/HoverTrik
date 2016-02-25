@@ -3,6 +3,9 @@
 
 #include <QObject>
 #include <QTimer>
+#include <QFile>
+#include <QTextStream>
+
 #include <unistd.h>
 #include <time.h>
 #include <math.h>
@@ -26,7 +29,7 @@ class HoverTrik : public QObject
     trikControl::BrickInterface* brick;
     QTimer* mrTimer;
     double ms;
-    struct timespec spec;
+    //struct timespec spec;
 
     vector<double*> vecSens;
 public:

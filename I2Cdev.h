@@ -10,11 +10,15 @@
 #include <math.h>
 #include <cstdio>
 
+#include <chrono>
+
+using namespace std::chrono;
+
 #define delay_ms delay
 #define uint8_t __u8
 #define int8_t char
 
-
+void init_timer();
 void set_file(uint8_t file);
 int8_t i2c_read(uint8_t devAddr, uint8_t regAddr, uint8_t length, uint8_t *buf);
 int8_t i2c_write(uint8_t devAddr, uint8_t regAddr, uint8_t length, uint8_t *buf);

@@ -2,6 +2,13 @@
 
 uint8_t i2c_file;
 
+high_resolution_clock::time_point start;
+
+void init_timer()
+{
+    start = high_resolution_clock::now();
+}
+
 void set_file(uint8_t file)
 {
     i2c_file = file;
@@ -145,10 +152,13 @@ long millis()
     time_t s;
     struct timespec spec;
     clock_gettime(CLOCK_REALTIME, &spec);
+    clock_t cl = clock();
 
     s = spec.tv_sec;
-    ms = round(spec.tv_nsec/1.0e6);
+    ms = round(1000*(double)cl/CLOCKS_PER_SEC);//round(spec.tv_nsec/1.0e6);
 
+    ms = duration_cast<milliseconds>(high_resolution_clock::now()-start).count();
+    //ms = high_resolution_clock::now().time_since_epoch().count();
     return ms;
 }
 
