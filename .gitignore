@@ -6,7 +6,9 @@
 *.a
 *.la
 *.lai
-*.so
+*media*
+*.so*
+
 *.dll
 *.dylib
 
