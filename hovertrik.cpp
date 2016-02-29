@@ -28,19 +28,25 @@ HoverTrik::HoverTrik(QObject *parent) :
     printf("open: %d\n",mympu_open(fsr));
 
     //Init motor variables
-    cushion = brick->motor("E1");
-    thrust = brick->motor("E2");
-    rudder = brick->motor("C2");
+    cushion = brick->motor("S1");
+    thrust = brick->motor("S3");
+    rudder = brick->motor("S2");
+    printf("status: %d\n",rudder->status());
+
 
     //Init regulators
-    cushion->setPower(-100);
-    thrust->setPower(-100);
+   // cushion->setPower(-90);
+    //thrust->setPower(-90);
     rudder->setPower(0);
+
+    printf("initok\n");
 
     imuTimer = new QTimer(this);
     connect(imuTimer,SIGNAL(timeout()),this,SLOT(timeout()));
 
     QTimer::singleShot(25000,this,SLOT(motorStart()));
+    printf("Let's go!\n");
+    state = 0;
 
    // motorStart = new QTimer(this);
     //delay(5000);
@@ -58,21 +64,24 @@ void HoverTrik::motorStart()
     {
         case 0:
         {
-            cushion->setPower(0);
+            printf("Start cushion!\n");
+            //cushion->setPower(0);
             state = 1;
             QTimer::singleShot(1000,this,SLOT(motorStart()));
             break;
         }
         case 1:
         {
-            cushion->setPower(70);
-            thrust->setPower(40);
+            printf("Cushion to position! Thruster on!\n");
+            //cushion->setPower(70);
+            //thrust->setPower(40);
             state = 2;
             QTimer::singleShot(10000,this,SLOT(motorStart()));
             break;
         }
         case 2:
         {
+            printf("Turn left!\n");
             rudder->setPower(-25);
             state = 3;
             QTimer::singleShot(10000,this,SLOT(motorStart()));
@@ -80,6 +89,7 @@ void HoverTrik::motorStart()
         }
         case 3:
         {
+            printf("Turn right!\n");
             rudder->setPower(25);
             state = 4;
             QTimer::singleShot(10000,this,SLOT(motorStart()));
@@ -87,11 +97,13 @@ void HoverTrik::motorStart()
         }
         case 4:
         {
-
-            cushion->setPower(-100);
-            thrust->setPower(-100);
-            rudder->setPower(0);
+            printf("Stopping!\n");
             imuTimer->stop();
+
+            //cushion->setPower(-100);
+            //thrust->setPower(-100);
+            rudder->setPower(0);
+
 
             QFile outFile("out.txt");
             outFile.open(QIODevice::WriteOnly);
@@ -108,6 +120,9 @@ void HoverTrik::motorStart()
                 ts << endl;
             }
             printf("done!\n");
+            //qApp->exit();
+            //this->deleteLater();
+            this->thread()->quit();
             outFile.close();
             emit finish();
             break;

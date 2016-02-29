@@ -32,6 +32,6 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     HoverTrik worker;
-    QObject::connect(&worker,SIGNAL(finish()),&app,SLOT(finish()));
+    //QObject::connect(&worker,SIGNAL(finish()),&app,SLOT(finish()));
 	return app.exec();
 }

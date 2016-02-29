@@ -721,7 +721,7 @@ int mpu_init(struct int_param_s *int_param)
 #define MPU6500_MEM_REV_ADDR    (0x17)
     if (mpu_read_mem(MPU6500_MEM_REV_ADDR, 1, &rev))
         return -7;
-    printf("REV: %d\n",rev);
+    //printf("REV: %d\n",rev);
     if (rev == 0x1)
         st->chip_cfg.accel_half = 0;
     else {
@@ -2304,7 +2304,7 @@ int mpu_read_mem(unsigned short mem_addr, unsigned short length,
     }
     if (!st->chip_cfg.sensors)
     {
-        printf("sensors problems! %d\n",st->chip_cfg.sensors);
+       // printf("sensors problems! %d\n",st->chip_cfg.sensors);
         return -1;
     }
 

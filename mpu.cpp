@@ -149,7 +149,7 @@ int mympu_update() {
 		if (ret!=0) return ret; 
 	} while (fifoCount>1);
 
-   // printf("fifo count: %d\n",cnt);
+    //printf("fifo count: %d\n",cnt);
 
 	q._f.w = (float)q._l[0] / (float)QUAT_SENS;
 	q._f.x = (float)q._l[1] / (float)QUAT_SENS;
