@@ -40,7 +40,7 @@ int mympu_open(unsigned int rate) {
   //  mpu_test();
 	
     ret = mpu_set_sensors(INV_XYZ_GYRO|INV_XYZ_ACCEL|INV_XYZ_COMPASS);
-    printf("set_sens: %d\n",ret);
+   // printf("set_sens: %d\n",ret);
 #ifdef MPU_DEBUG
     if (ret) return 20+ret;
 #endif
@@ -70,7 +70,7 @@ int mympu_open(unsigned int rate) {
     dmp_init_structures();
 //  mpu_test();
     ret = dmp_load_motion_driver_firmware();
-    printf("load: %d\n",ret);
+  //  printf("load: %d\n",ret);
 #ifdef MPU_DEBUG
     if (ret) return 80+ret;
 #endif
@@ -81,7 +81,7 @@ int mympu_open(unsigned int rate) {
 #endif
 
     ret = mpu_set_dmp_state(1);
-    printf("state: %d\n",ret);
+   // printf("state: %d\n",ret);
 #ifdef MPU_DEBUG
     if (ret) return 100+ret;
 #endif
