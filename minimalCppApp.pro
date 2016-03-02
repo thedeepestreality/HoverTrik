@@ -17,6 +17,9 @@ TEMPLATE = app
 CONFIG += console 
 QMAKE_CXXFLAGS += -std=c++11
 
+QMAKE_LFLAGS += -Wl,-O1,-rpath,.
+QMAKE_LFLAGS += -Wl,-rpath-link,$$DESTDIR
+
 DESTDIR = .
 
 SOURCES += \

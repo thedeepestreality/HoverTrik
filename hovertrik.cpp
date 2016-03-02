@@ -1,4 +1,7 @@
 #include "hovertrik.h"
+#include <iostream>
+
+using namespace std;
 
 HoverTrik::HoverTrik(QObject *parent) :
     QObject(parent)
@@ -10,49 +13,56 @@ HoverTrik::HoverTrik(QObject *parent) :
     state = 0;
 
     //Open I2C file
-    int file = open("/dev/i2c-1",O_RDWR);
-    if (file < 0)
-        printf("File error!\n");
-    else
-        printf("File opened!\n");
+//    int file = open("/dev/i2c-1",O_RDWR);
+//    if (file < 0)
+//        printf("File error!\n");
+//    else
+//        printf("File opened!\n");
 
-    if (ioctl(file, I2C_SLAVE, 0x68)<0)
-    {
-        printf("ioctl error!\n");
+//    if (ioctl(file, I2C_SLAVE, 0x68)<0)
+//    {
+//        printf("ioctl error!\n");
 
-    }
-    else
-        printf("ioctl ok!\n");
+//    }
+//    else
+//        printf("ioctl ok!\n");
 
-    set_file(file);
-    printf("open: %d\n",mympu_open(fsr));
+//    set_file(file);
+   // printf("open: %d\n",mympu_open(fsr));
 
     //Init motor variables
-    cushion = brick->motor("S1");
-    thrust = brick->motor("S3");
-    rudder = brick->motor("S2");
-    printf("status: %d\n",rudder->status());
+    //cushion = brick->motor("E1");
+    //thrust = brick->motor("E2");
 
+
+    //ПРОБЛЕМА С СЕРВОЙ
+    rudder = brick->motor("S4");
+    //НУЛЕВОЙ УКАЗАТЕЛЬ
+    cout << rudder << endl;
+    //SEGMENTATION FAULT
+    rudder->setPower(0);
 
     //Init regulators
    // cushion->setPower(-90);
     //thrust->setPower(-90);
-    rudder->setPower(0);
+    //rudder->setPower(0);
 
-    printf("initok\n");
 
-    imuTimer = new QTimer(this);
-    connect(imuTimer,SIGNAL(timeout()),this,SLOT(timeout()));
 
-    QTimer::singleShot(25000,this,SLOT(motorStart()));
-    printf("Let's go!\n");
-    state = 0;
+//    printf("initok\n");
 
-   // motorStart = new QTimer(this);
-    //delay(5000);
-    imuTimer->start(1000/fsr);
+//    imuTimer = new QTimer(this);
+//    connect(imuTimer,SIGNAL(timeout()),this,SLOT(timeout()));
 
-    init_timer();
+//    QTimer::singleShot(25000,this,SLOT(motorStart()));
+//    printf("Let's go!\n");
+//    state = 0;
+
+//   // motorStart = new QTimer(this);
+//    //delay(5000);
+//    imuTimer->start(1000/fsr);
+
+//    init_timer();
 
 
     //clock_gettime(CLOCK_REALTIME, &spec);
