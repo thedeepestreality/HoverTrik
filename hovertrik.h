@@ -6,6 +6,7 @@
 #include <QTimer>
 #include <QFile>
 #include <QTextStream>
+#include <QVector>
 
 #include <unistd.h>
 #include <time.h>
@@ -22,7 +23,7 @@
 #include "inv_mpu.h"
 #include "inv_mpu_dmp_motion_driver.h"
 
-#define CALIB_OFFSET 1
+#define CALIB_OFFSET 20
 #define WORKING_TIME 10
 
 using namespace std;
@@ -42,6 +43,8 @@ class HoverTrik : public QObject
     trikControl::MotorInterface* rudder;
 
     int state;
+
+    double ang;
 
     vector<double*> vecSens;
 public:

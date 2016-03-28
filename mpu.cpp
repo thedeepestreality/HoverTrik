@@ -50,7 +50,7 @@ int mympu_open(unsigned int rate) {
     if (ret) return 30+ret;
 #endif
 
-        ret = mpu_set_accel_fsr(2);
+        ret = mpu_set_accel_fsr(8);
 #ifdef MPU_DEBUG
     if (ret) return 40+ret;
 #endif
