@@ -26,12 +26,43 @@
 //#include "I2Cdev.h"
 #include "hovertrik.h"
 #include <QObject>
+#include <cstdlib>
+
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+   // HoverTrik worker;
 
-    HoverTrik worker;
+//    if (argc == 5)
+//    {
+        HoverConfig conf;
+//        conf.leftC = atoi(argv[1]);
+//        conf.rightC = atoi(argv[2]);
+//        conf.leftM = atoi(argv[3]);
+//        conf.rightM = atoi(argv[4]);
+        conf.fsr = atoi(argv[1]);
+//        conf.duration = atoi(argv[6]);
+//        conf.imuDuration = atoi(argv[7]);
+//        conf.phi_p = atof(argv[8]);
+//        conf.phi_i = atof(argv[9]);
+//        conf.w_p = atof(argv[10]);
+//        conf.w_i = atof(argv[11]);
+//        conf.lvl = atof(argv[12]);
+
+//        printf("Started with params: %d %d %d %d %d\r\n",conf.leftM,
+//                                                      conf.rightM,
+//                                                      conf.fsr,
+//                                                      conf.duration,
+//                                                      conf.imuDuration);
+
+        HoverTrik worker(conf);
+ //   }
+//        else
+//    {
+//        printf("Error args\r\n");
+//        return -1;
+//    }
     //QObject::connect(&worker,SIGNAL(finish()),&app,SLOT(finish()));
 	return app.exec();
 }

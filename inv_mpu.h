@@ -41,6 +41,7 @@
 int mpu_select_device(int device);
 
 void mpu_test();
+
 inline void get_ms(long unsigned int *timestamp)
 {
     *timestamp = millis(); 
@@ -78,6 +79,8 @@ struct int_param_s {
 #define MPU_INT_STATUS_DMP_5            (0x2000)
 
 /* Set up APIs */
+int setup_compass(void);
+
 void mpu_init_structures();
 
 int mpu_init(struct int_param_s *int_param);

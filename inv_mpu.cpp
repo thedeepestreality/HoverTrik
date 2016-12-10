@@ -577,7 +577,7 @@ void mpu_init_structures()
 #define MAX_PACKET_LENGTH (12)
 
 #ifdef AK89xx_SECONDARY
-static int setup_compass(void);
+//int setup_compass(void);
 #define MAX_COMPASS_SAMPLE_RATE (100)
 #endif
 
@@ -728,6 +728,7 @@ int mpu_init(struct int_param_s *int_param)
 #ifdef MPU_DEBUG
         Serial.print("Unsupported software product rev: "); Serial.println(rev);
 #endif
+        printf("Rev: 0x%x\r\n",rev);
         return -8;
     }
 
@@ -781,7 +782,9 @@ int mpu_init(struct int_param_s *int_param)
     Serial.println("Setting up compass");
 #endif
     errCode = setup_compass();
+    //printf("Compass err: \r\n",errCode);
     if (errCode != 0) {
+
 #ifdef MPU_DEBUG
        Serial.print("Setup compass failed: "); Serial.println(errCode); 
 #endif
@@ -2304,7 +2307,7 @@ int mpu_read_mem(unsigned short mem_addr, unsigned short length,
     }
     if (!st->chip_cfg.sensors)
     {
-       // printf("sensors problems! %d\n",st->chip_cfg.sensors);
+        printf("sensors problems! %d\n",st->chip_cfg.sensors);
         return -1;
     }
 
@@ -2468,7 +2471,7 @@ int mpu_get_dmp_state(unsigned char *enabled)
 
 
 /* This initialization is similar to the one in ak8975.c. */
-static int setup_compass(void)
+int setup_compass(void)
 {
 #ifdef AK89xx_SECONDARY
     unsigned char data[4], akm_addr;
@@ -2479,6 +2482,7 @@ static int setup_compass(void)
     for (akm_addr = 0x0C; akm_addr <= 0x0F; akm_addr++) {
         int result;
         result = i2c_read(akm_addr, AKM_REG_WHOAMI, 1, data);
+        printf("whoami: %d\r\n",result);
         if (!result && (data[0] == AKM_WHOAMI))
             break;
     }

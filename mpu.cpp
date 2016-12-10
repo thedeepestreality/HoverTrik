@@ -28,23 +28,49 @@ static unsigned char fifoCount;
 
 //#define MPU_DEBUG
 
+//void initAK8963(float * destination)
+//{
+//  // First extract the factory calibration for each magnetometer axis
+//  uint8_t rawData[3];  // x/y/z gyro calibration data stored here
+//  writeByte(AK8963_ADDRESS, AK8963_CNTL, 0x00); // Power down magnetometer
+//  delay(10);
+//  writeByte(AK8963_ADDRESS, AK8963_CNTL, 0x0F); // Enter Fuse ROM access mode
+//  delay(10);
+//  readBytes(AK8963_ADDRESS, AK8963_ASAX, 3, &rawData[0]);  // Read the x-, y-, and z-axis calibration values
+//  destination[0] =  (float)(rawData[0] - 128)/256. + 1.;   // Return x-axis sensitivity adjustment values, etc.
+//  destination[1] =  (float)(rawData[1] - 128)/256. + 1.;
+//  destination[2] =  (float)(rawData[2] - 128)/256. + 1.;
+//  writeByte(AK8963_ADDRESS, AK8963_CNTL, 0x00); // Power down magnetometer
+//  delay(10);
+//  // Configure the magnetometer for continuous read and highest resolution
+//  // set Mscale bit 4 to 1 (0) to enable 16 (14) bit resolution in CNTL register,
+//  // and enable continuous mode data acquisition Mmode (bits [3:0]), 0010 for 8 Hz and 0110 for 100 Hz sample rates
+//  writeByte(AK8963_ADDRESS, AK8963_CNTL, Mscale << 4 | Mmode); // Set magnetometer data resolution and sample ODR
+//  delay(10);
+//}
+
 int mympu_open(unsigned int rate) {
   	mpu_select_device(0);
    	mpu_init_structures();
 
+    ret = mpu_set_sensors(INV_XYZ_GYRO|INV_XYZ_ACCEL|INV_XYZ_COMPASS);
+   printf("set_sens: %d\n",ret);
+#ifdef MPU_DEBUG
+    if (ret) return 20+ret;
+#endif
+
 	ret = mpu_init(NULL);
+    printf("Inint: %d\r\n",ret);
 #ifdef MPU_DEBUG
 	if (ret) return 10+ret;
 #endif
 
   //  mpu_test();
 	
-    ret = mpu_set_sensors(INV_XYZ_GYRO|INV_XYZ_ACCEL|INV_XYZ_COMPASS);
-   // printf("set_sens: %d\n",ret);
-#ifdef MPU_DEBUG
-    if (ret) return 20+ret;
-#endif
 
+
+    ret = setup_compass();
+    printf("Compass: ret %d\r\n",ret);
         ret = mpu_set_gyro_fsr(FSR);
 #ifdef MPU_DEBUG
     if (ret) return 30+ret;
@@ -177,11 +203,11 @@ int mympu_update() {
 	mympu.accel[1] = (float)accel[1] / 16384;
 	mympu.accel[2] = (float)accel[2] / 16384;
 	
-	//Serial.println(mpu_get_compass_reg(magneto,NULL));
-	
-	mympu.magneto[0] = (float)magneto[0] / 0.6;
-	mympu.magneto[1] = (float)magneto[1] / 0.6;
-	mympu.magneto[2] = (float)magneto[2] / 0.6;
+    //Serial.println(mpu_get_compass_reg(magneto,NULL));
+    //printf("compass: %d\r\n",mpu_get_compass_reg(magneto,NULL));
+//	mympu.magneto[0] = (float)magneto[0] / 0.6;
+//	mympu.magneto[1] = (float)magneto[1] / 0.6;
+//	mympu.magneto[2] = (float)magneto[2] / 0.6;
 
 	return 0;
 }
